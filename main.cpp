@@ -7,7 +7,10 @@
 #include <random>
 #include <chrono>
 
-using std::cout, std::endl, std::cin, std::array, std::vector, std::string;
+using std::cout, std::endl, std::cin, std::getchar;
+using std::array, std::vector, std::string;
+
+const size_t row_num = 10, col_num = 10, trap_num = 10;
 
 auto panic(const string &msg) -> void {
   cout << msg << endl;
@@ -117,9 +120,8 @@ private:
   auto ValidateTreasurePosition(Position pos) -> bool {
     return pos != player_;
   }
-
-public:
-  Game() {
+  
+  auto Init() -> void {
     ClearScreen();
     player_.SetCol(0);
     player_.SetRow(0);
@@ -142,6 +144,11 @@ public:
     if (!ValidateTrapPosition(trap))
       goto gen_random_trap;
     randomTrap_ = trap;
+  }
+
+public:
+  Game() {
+    Init();
   }
   
   ~Game() {
@@ -212,6 +219,10 @@ private:
         break;
     }
   }
+  
+  auto Reset() -> void {
+    Init();
+  }
 
 public:
   auto Play() -> void {
@@ -234,6 +245,9 @@ public:
         case 'd':
           DoCommand(KeyboardCommand::kRight);
           break;
+        case 'r':
+          Reset();
+          break;
         default:
           panic("Unknown key from Keyboard");
       }
@@ -248,8 +262,16 @@ public:
 };
 
 auto main() -> int {
+  cout << "\033[2J\033[1;1H";
+  cout << R"(
+Welcome to dungeon crawl game.
+You can use w,s,a,d to control player and r to reset the game.
+Ready to go? Press ENTER to move on!
+)";
+  getchar();
+  
   play:
-  Game g = Game();
+  Game g = Game<row_num, col_num, trap_num>();
   g.Play();
   ask:
   {
