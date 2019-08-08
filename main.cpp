@@ -13,6 +13,7 @@ using std::array, std::vector, std::string;
 const size_t row_num = 10, col_num = 10, trap_num = 10;
 
 auto panic(const string &msg) -> void {
+  cout << "\033[2J\033[1;1H";
   cout << "[PANIC] " + msg << endl;
   exit(EXIT_FAILURE);
 }
