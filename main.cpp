@@ -8,7 +8,7 @@
 #include <chrono>
 
 using std::cout, std::endl, std::cin, std::getchar;
-using std::array, std::vector, std::string;
+using std::array, std::string;
 
 const size_t row_num = 10, col_num = 10, trap_num = 10;
 
