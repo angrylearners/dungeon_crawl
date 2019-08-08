@@ -87,7 +87,7 @@ template<size_t row_num = 10, size_t col_num = 10, size_t trap_num = 10>
 class Game {
 private:
   Player<row_num, col_num> player_{};
-  vector<Position> traps_{};
+  array<Position, trap_num> traps_{};
   Position randomTrap_{};
   Position treasure_{};
   
@@ -127,7 +127,7 @@ public:
       auto trap = RandomPosition();
       if (!ValidateTrapPosition(trap))
         goto gen_trap;
-      traps_.push_back(trap);
+      traps_[i] = trap;
     }
     
     gen_random_trap:
