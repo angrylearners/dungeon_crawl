@@ -1,4 +1,4 @@
-# Dungeon Crawl
+# Dungeon Crawl [![CircleCI](https://circleci.com/gh/angrylearners/dungeon_crawl.svg?style=svg)](https://circleci.com/gh/angrylearners/dungeon_crawl)
 A implementation of dungeon crawl game in c++.<p>
 Check this [link](http://www.cplusplus.com/forum/articles/12974/) for more details.
 
