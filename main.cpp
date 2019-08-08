@@ -20,28 +20,28 @@ protected:
   uint row;
   uint col;
 public:
-  uint GetRow() {
+  auto GetRow() {
     return row;
   }
   
-  uint GetCol() {
+  auto GetCol() {
     return col;
   }
   
-  void SetRow(uint r) {
+  auto SetRow(uint r) {
     row = r;
   }
   
-  void SetCol(uint c) {
+  auto SetCol(uint c) {
     col = c;
   }
   
-  bool operator==(const Position &pos) {
+  auto operator==(const Position &pos) -> bool{
     return pos.row == row && pos.col == col;
   }
   
-  bool operator!=(const Position &pos) {
-    return pos.row == row && pos.col == col;
+  auto operator!=(const Position &pos) -> bool {
+    return !operator==(pos);
   }
 };
 
@@ -162,11 +162,11 @@ public:
   }
   
   Flag IsGameOver() {
-    if (player_.GetCol() == treasure_.GetCol() && player_.GetRow() == treasure_.GetRow())
+    if (player_==treasure_)
       return Flag::kSuccess;
     
     for (auto trap:traps_) {
-      if (trap.GetCol() == player_.GetCol() && trap.GetRow() == player_.GetRow())
+      if (trap == player_)
         return Flag::kFail;
     }
     return Flag::kNotOver;
