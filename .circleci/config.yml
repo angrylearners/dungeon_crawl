@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+    steps:
+      - checkout
+      - run: mkdir build
+      - run: cd build;cmake ..
+      - run: make -j4
