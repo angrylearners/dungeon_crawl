@@ -20,23 +20,23 @@ protected:
   uint row;
   uint col;
 public:
-  auto GetRow() {
+  auto GetRow() -> uint {
     return row;
   }
   
-  auto GetCol() {
+  auto GetCol() -> uint {
     return col;
   }
   
-  auto SetRow(uint r) {
+  auto SetRow(uint r) -> void {
     row = r;
   }
   
-  auto SetCol(uint c) {
+  auto SetCol(uint c) -> void {
     col = c;
   }
   
-  auto operator==(const Position &pos) -> bool{
+  auto operator==(const Position &pos) -> bool {
     return pos.row == row && pos.col == col;
   }
   
@@ -52,25 +52,25 @@ class Player : public Position {
   }
 
 public:
-  void GoUp() {
+  auto GoUp() -> void {
     if (!row)
       MoveOutOfBoard();
     row--;
   }
   
-  void GoDown() {
+  auto GoDown() -> void {
     row++;
     if (row >= row_num)
       MoveOutOfBoard();
   }
   
-  void GoLeft() {
+  auto GoLeft() -> void {
     if (!col)
       MoveOutOfBoard();
     col--;
   }
   
-  void GoRight() {
+  auto GoRight() -> void {
     col++;
     if (col >= col_num)
       MoveOutOfBoard();
@@ -134,9 +134,10 @@ public:
     auto trap = RandomPosition();
     if (!ValidateTrapPosition(trap))
       goto gen_random_trap;
+    randomTrap_ = trap;
   }
   
-  void ShowBoard() {
+  auto ShowBoard() -> void {
     array<array<char, col_num>, row_num> board = {};
     
     for (array<char, col_num> &row:board) {
@@ -161,18 +162,20 @@ public:
     return &player_;
   }
   
-  Flag IsGameOver() {
-    if (player_==treasure_)
+  auto IsGameOver() -> Flag {
+    if (player_ == treasure_)
       return Flag::kSuccess;
-    
+    if (player_ == randomTrap_)
+      return Flag::kFail;
     for (auto trap:traps_) {
       if (trap == player_)
         return Flag::kFail;
     }
+    
     return Flag::kNotOver;
   }
   
-  void GenerateRandomTrap() {
+  auto GenerateRandomTrap() -> void {
     gen_random_trap:
     auto trap = RandomPosition();
     if (!ValidateTrapPosition(trap))
@@ -187,7 +190,7 @@ auto PlayGame() -> void {
   auto player = g.GetPlayer();
   g.ShowBoard();
   play_game:
-  g.GenerateRandomTrap();
+  
   char command;
   cin >> command;
   switch (command) {
@@ -207,6 +210,7 @@ auto PlayGame() -> void {
       panic(&"unknown command "[command]);
   }
   g.ShowBoard();
+  g.GenerateRandomTrap();
   switch (g.IsGameOver()) {
     case Flag::kSuccess:
       cout << "Wow! You win!" << endl;
@@ -217,6 +221,7 @@ auto PlayGame() -> void {
     case Flag::kNotOver:
       goto play_game;
   }
+  
 }
 
 auto main() -> int {
