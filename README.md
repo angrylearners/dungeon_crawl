@@ -26,10 +26,10 @@ or <p>
 0 0 0 7 0 0 0 0 0 0 <p>
 0 0 0 0 0 0 7 0 0 0 <p>
 0 0 0 0 0 0 0 0 0 4 <p>
-> Allow the user (marked by G in the example) to move either up, down, left, or right each turn. If the player steps on a trap then they lose. If the make it to the treasure 'X' then they win.
-> ★★ Add enemies that move randomly in any direction once per turn. (enemies just like traps cause the player to lose if touched)
-> HINT: Don't let the player move off the gameboard! You program will crash if they move off the top or bottom of the board!
-(the same holds true for enemies)
+> Allow the user (marked by G in the example) to move either up, down, left, or right each turn. If the player steps on a trap then they lose. If the make it to the treasure 'X' then they win.<p>
+> ★★ Add enemies that move randomly in any direction once per turn. (enemies just like traps cause the player to lose if touched)<p>
+> HINT: Don't let the player move off the gameboard! You program will crash if they move off the top or bottom of the board!<p>
+(the same holds true for enemies)<p>
 
 ## How to play this game
 ```bash
