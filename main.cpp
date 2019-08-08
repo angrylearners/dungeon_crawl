@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <array>
-#include <vector>
 #include <random>
 #include <chrono>
 
@@ -77,10 +76,17 @@ public:
   }
 };
 
-enum class Flag {
+enum class GameOverFlag {
   kSuccess,
   kFail,
   kNotOver
+};
+
+enum class KeyboardCommand {
+  kUp,
+  kDown,
+  kLeft,
+  kRight
 };
 
 template<size_t row_num = 10, size_t col_num = 10, size_t trap_num = 10>
@@ -114,6 +120,7 @@ private:
 
 public:
   Game() {
+    ClearScreen();
     player_.SetCol(0);
     player_.SetRow(0);
     
@@ -137,7 +144,17 @@ public:
     randomTrap_ = trap;
   }
   
+  ~Game() {
+    ClearScreen();
+  }
+
+private:
+  auto ClearScreen() -> void {
+    cout << "\033[2J\033[1;1H";
+  }
+  
   auto ShowBoard() -> void {
+    ClearScreen();
     array<array<char, col_num>, row_num> board = {};
     
     for (array<char, col_num> &row:board) {
@@ -158,21 +175,17 @@ public:
     }
   }
   
-  auto GetPlayer() {
-    return &player_;
-  }
-  
-  auto IsGameOver() -> Flag {
+  auto IsGameOver() -> GameOverFlag {
     if (player_ == treasure_)
-      return Flag::kSuccess;
+      return GameOverFlag::kSuccess;
     if (player_ == randomTrap_)
-      return Flag::kFail;
+      return GameOverFlag::kFail;
     for (auto trap:traps_) {
       if (trap == player_)
-        return Flag::kFail;
+        return GameOverFlag::kFail;
     }
     
-    return Flag::kNotOver;
+    return GameOverFlag::kNotOver;
   }
   
   auto GenerateRandomTrap() -> void {
@@ -182,61 +195,69 @@ public:
       goto gen_random_trap;
     randomTrap_ = trap;
   }
+  
+  auto DoCommand(KeyboardCommand cmd) {
+    switch (cmd) {
+      case KeyboardCommand::kUp:
+        player_.GoUp();
+        break;
+      case KeyboardCommand::kDown:
+        player_.GoDown();
+        break;
+      case KeyboardCommand::kLeft:
+        player_.GoLeft();
+        break;
+      case KeyboardCommand::kRight:
+        player_.GoRight();
+        break;
+    }
+  }
+
+public:
+  auto Play() -> void {
+    GameOverFlag flag;
+    do {
+      GenerateRandomTrap();
+      ShowBoard();
+      char ch;
+      cin >> ch;
+      switch (char(ch)) {
+        case 'w':
+          DoCommand(KeyboardCommand::kUp);
+          break;
+        case 's':
+          DoCommand(KeyboardCommand::kDown);
+          break;
+        case 'a':
+          DoCommand(KeyboardCommand::kLeft);
+          break;
+        case 'd':
+          DoCommand(KeyboardCommand::kRight);
+          break;
+        default:
+          panic("Unknown key from Keyboard");
+      }
+      flag = IsGameOver();
+    } while (flag == GameOverFlag::kNotOver);
+    
+    if (flag == GameOverFlag::kFail)
+      cout << "Sorry, you failed" << endl;
+    else
+      cout << "Wow! You win!" << endl;
+  }
 };
 
-template<size_t row_num = 10, size_t col_num = 10, size_t trap_num = 10>
-auto PlayGame() -> void {
-  Game<row_num, col_num, trap_num> g;
-  auto player = g.GetPlayer();
-  g.ShowBoard();
-  play_game:
-  
-  char command;
-  cin >> command;
-  switch (command) {
-    case 'w':
-      player->GoUp();
-      break;
-    case 's':
-      player->GoDown();
-      break;
-    case 'a':
-      player->GoLeft();
-      break;
-    case 'd':
-      player->GoRight();
-      break;
-    default:
-      panic(&"unknown command "[command]);
-  }
-  g.ShowBoard();
-  g.GenerateRandomTrap();
-  switch (g.IsGameOver()) {
-    case Flag::kSuccess:
-      cout << "Wow! You win!" << endl;
-      return;
-    case Flag::kFail:
-      cout << "Sorry. You failed." << endl;
-      return;
-    case Flag::kNotOver:
-      goto play_game;
-  }
-  
-}
-
 auto main() -> int {
-  cout << "Welcome to Dungeon Crawl Game!" << endl;
-  
-  play_game:
-  PlayGame();
-  
+  play:
+  Game g = Game();
+  g.Play();
   ask:
   {
     cout << "Would you like to play again? [y/n] ";
     std::string str;
     cin >> str;
     if (str == "y")
-      goto play_game;
+      goto play;
     else if (str == "n") {
       cout << "Bye Bye." << endl;
       return EXIT_SUCCESS;
@@ -245,4 +266,3 @@ auto main() -> int {
       goto ask;
     }
   }
-}
