@@ -266,3 +266,4 @@ auto main() -> int {
       goto ask;
     }
   }
+}
