@@ -4,11 +4,10 @@
 
 #include <iostream>
 #include <array>
-#include <vector>
 #include <random>
 #include <chrono>
 
-using std::cout, std::endl, std::cin, std::array, std::vector, std::string;
+using std::cout, std::endl, std::cin, std::array, std::string;
 
 auto panic(const string &msg) -> void {
   cout << msg << endl;
