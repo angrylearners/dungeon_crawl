@@ -38,7 +38,7 @@ cd build
 cmake ..
 make -j4
 ```
-Then you will find a executable file named dungeon_crawl in this build folder.
-
+Then you will find a executable file named dungeon_crawl in this build folder.<p>
+**Note that you need a ACTUAL terminal. Run it using ide like clion may lead to weird result.** 
 ## License
 MIT.See [LICENSE](LICENSE) for more details.
