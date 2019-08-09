@@ -273,16 +273,19 @@ Ready to go? Press ENTER to move on!
   getchar();
   
   play:
-  Game g = Game<row_num, col_num, trap_num>();
-  g.Play();
+  auto g = new Game<row_num, col_num, trap_num>();
+  g->Play();
   ask:
   {
     cout << "Would you like to play again? [y/n] ";
     std::string str;
     cin >> str;
-    if (str == "y")
+    if (str == "y") {
+      delete g;
       goto play;
+    }
     else if (str == "n") {
+      delete g;
       cout << "Bye Bye." << endl;
       return EXIT_SUCCESS;
     } else {
