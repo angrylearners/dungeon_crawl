@@ -10,7 +10,7 @@
 using std::cout, std::endl, std::cin, std::getchar;
 using std::array, std::string;
 
-const size_t row_num = 10, col_num = 10, trap_num = 10;
+const size_t row_num = 100, col_num = 100, trap_num = 1000;
 
 auto panic(const string &msg) -> void {
   cout << "\033[2J\033[1;1H";
@@ -249,6 +249,9 @@ public:
         case 'r':
           Reset();
           break;
+        case 'q':
+          Reset();
+          return;
         default:
           panic("Unknown key from Keyboard");
       }
