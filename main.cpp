@@ -10,7 +10,7 @@
 using std::cout, std::endl, std::cin, std::getchar;
 using std::array, std::string;
 
-const size_t row_num = 100, col_num = 100, trap_num = 1000;
+const size_t row_num = 50, col_num = 100, trap_num = 1000;
 
 auto panic(const string &msg) -> void {
   cout << "\033[2J\033[1;1H";
@@ -164,20 +164,16 @@ private:
   auto ShowBoard() -> void {
     ClearScreen();
     array<array<char, col_num>, row_num> board = {};
-    
-    for (array<char, col_num> &row:board) {
-      for (char &col:row)
-        col = '.';
-    }
+    board.fill(array<char, col_num>{'.'});
     
     for (auto trap:traps_)
       board[trap.GetRow()][trap.GetCol()] = 'T';
     board[randomTrap_.GetRow()][randomTrap_.GetCol()] = 'T';
     board[treasure_.GetRow()][treasure_.GetCol()] = 'X';
     board[player_.GetRow()][player_.GetCol()] = 'G';
-    
-    for (array<char, col_num> row:board) {
-      for (char col:row)
+  
+    for (auto row:board) {
+      for (auto col:row)
         cout << col;
       cout << endl;
     }
@@ -286,8 +282,7 @@ Ready to go? Press ENTER to move on!
     if (str == "y") {
       delete g;
       goto play;
-    }
-    else if (str == "n") {
+    } else if (str == "n") {
       delete g;
       cout << "Bye Bye." << endl;
       return EXIT_SUCCESS;
