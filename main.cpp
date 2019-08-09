@@ -252,6 +252,7 @@ public:
         default:
           panic("Unknown key from Keyboard");
       }
+      ShowBoard();
       flag = IsGameOver();
     } while (flag == GameOverFlag::kNotOver);
     
