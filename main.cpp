@@ -164,7 +164,12 @@ private:
   auto ShowBoard() -> void {
     ClearScreen();
     array<array<char, col_num>, row_num> board = {};
-    board.fill(array<char, col_num>{'.'});
+  
+    {
+      auto tmp_row = array<char, col_num>{};
+      tmp_row.fill('.');
+      board.fill(tmp_row);
+    }
     
     for (auto trap:traps_)
       board[trap.GetRow()][trap.GetCol()] = 'T';
