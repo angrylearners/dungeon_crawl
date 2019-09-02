@@ -282,7 +282,7 @@ Ready to go? Press ENTER to move on!
   ask:
   {
     cout << "Would you like to play again? [y/n] ";
-    string str;
+    string str = "";
     cin >> str;
     if (str == "y") {
       delete g;
